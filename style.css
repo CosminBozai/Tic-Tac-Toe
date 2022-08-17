@@ -114,8 +114,8 @@
   background-color: white;
 }
 
-.winning-message {
-  display: flex;
+.overscreen {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -129,7 +129,7 @@
   flex-direction: column;
 }
 
-.winning-message button {
+.overscreen button {
   font-size: 3rem;
   background-color: white;
   border: 1px solid black;
@@ -137,13 +137,13 @@
   cursor: pointer;
 }
 
-.winning-message button:hover {
+.overscreen button:hover {
   background-color: black;
   color: white;
   border-color: white;
 }
 
-.winning-message.show {
+.overscreen.show {
   display: flex;
 }
 
