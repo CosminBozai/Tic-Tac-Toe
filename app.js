@@ -20,7 +20,11 @@ const overScreenHandler = (() => {
   };
   const winningMessageText = document.getElementById("winning-message-text");
   const displayWinnerName = (player) => {
-    winningMessageText.textContent = `${player} is the winner!`;
+    if (player === "draw") {
+      winningMessageText.textContent = "It's a draw!";
+    } else {
+      winningMessageText.textContent = `${player} is the winner!`;
+    }
   };
   return {
     hide,
@@ -39,11 +43,14 @@ const Game = () => {
     cell.addEventListener("click", (e) => {
       let currentTurn = circleTurn ? "circle" : "x";
       cell = e.target;
+
       if (circleTurn == false) {
         cell.classList.add("x");
       } else if (circleTurn == true) {
         cell.classList.add("circle");
       }
+
+      // console.log(Gameboard.getCells());
       if (checkWin(currentTurn)) {
         switch (currentTurn) {
           case "x":
@@ -56,6 +63,7 @@ const Game = () => {
         overScreenHandler.show();
       }
       if (checkDraw()) {
+        overScreenHandler.displayWinnerName("draw");
         overScreenHandler.show();
       }
       return (circleTurn = !circleTurn);
