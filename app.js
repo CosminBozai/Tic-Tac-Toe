@@ -14,9 +14,9 @@ const overScreenHandler = (() => {
   };
 })();
 
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", Game);
 
-function startGame() {
+function Game() {
   const playerOne = {
     name: () => {
       return document.getElementById("player1").value;
@@ -30,4 +30,25 @@ function startGame() {
     },
     mark: "circle",
   };
+  overScreenHandler.hide();
+  gameBoard.mark();
 }
+
+const gameBoard = (() => {
+  const board = document.getElementById("board");
+  const cells = document.querySelectorAll(".cell");
+  let circle = false;
+
+  const mark = () => {
+    cells.forEach((cell) => {
+      cell.addEventListener("click", clickHandler, { once: true });
+    });
+    function clickHandler(e) {
+      let currentTurn = circle ? "circle" : "x";
+      let cell = e.target;
+      cell.classList.add(currentTurn);
+      return (circle = !circle);
+    }
+  };
+  return { mark };
+})();
