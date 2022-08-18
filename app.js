@@ -1,58 +1,29 @@
-const startButton = document.getElementById("start-button");
+const Gameboard = (() => {
+  const cells = document.querySelectorAll(".cell");
+  const getCells = () => {
+    return cells;
+  };
+  return { getCells };
+  /*
+  get cells
 
-const overScreenHandler = (() => {
-  const overScreen = document.getElementById("overscreen");
-  const hide = () => {
-    overScreen.classList.remove("show");
-  };
-  const show = () => {
-    overScreen.classList.add("show");
-  };
-  return {
-    hide,
-    show,
-  };
+   */
 })();
 
-startButton.addEventListener("click", Game);
+const overScreenHandler = (() => {
+  /*
+   */
+})();
 
-function Game() {
-  const playerOne = {
-    name: () => {
-      return document.getElementById("player1").value;
-    },
-    mark: "x",
-  };
-
-  const playerTwo = {
-    name: () => {
-      return document.getElementById("player2").value;
-    },
-    mark: "circle",
-  };
-  overScreenHandler.hide();
-  gameBoard.mark();
-  gameBoard.markedCells;
-}
-
-const gameBoard = (() => {
-  let circle = false;
-  const board = document.getElementById("board");
-  const cells = document.querySelectorAll(".cell");
-  let markedCells = [];
-
-  const mark = () => {
-    cells.forEach((cell) => {
-      cell.addEventListener("click", clickHandler, { once: true });
+const Game = (() => {
+  // const playerOne = document.getElementById("palyer1").value;
+  // const playerTwo = document.getElementById("palyer2").value;
+  Gameboard.getCells().forEach((cell) => {
+    cell.addEventListener("click", (e) => {
+      console.log(e.target);
     });
-    function clickHandler(e) {
-      let cell = e.target;
-      let currentTurn = circle ? "circle" : "x";
-      cell.classList.add(currentTurn);
-      markedCells.push(cell);
-      return (circle = !circle);
-    }
-  };
-
-  return { mark, markedCells };
+  });
+  /*
+  add event listener to all the cells
+   */
 })();
