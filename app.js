@@ -91,7 +91,6 @@ const Game = (() => {
       overScreenHandler.show();
       return (circleTurn = false);
     }
-    console.log(circleTurn);
     return (circleTurn = !circleTurn);
   }
 
