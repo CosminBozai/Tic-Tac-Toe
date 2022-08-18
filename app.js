@@ -32,23 +32,27 @@ function Game() {
   };
   overScreenHandler.hide();
   gameBoard.mark();
+  gameBoard.markedCells;
 }
 
 const gameBoard = (() => {
+  let circle = false;
   const board = document.getElementById("board");
   const cells = document.querySelectorAll(".cell");
-  let circle = false;
+  let markedCells = [];
 
   const mark = () => {
     cells.forEach((cell) => {
       cell.addEventListener("click", clickHandler, { once: true });
     });
     function clickHandler(e) {
-      let currentTurn = circle ? "circle" : "x";
       let cell = e.target;
+      let currentTurn = circle ? "circle" : "x";
       cell.classList.add(currentTurn);
+      markedCells.push(cell);
       return (circle = !circle);
     }
   };
-  return { mark };
+
+  return { mark, markedCells };
 })();
