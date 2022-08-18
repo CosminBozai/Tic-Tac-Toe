@@ -16,7 +16,18 @@ const Gameboard = (() => {
       board.classList.add("x");
     }
   };
-  return { getCells, boardClass };
+
+  const resetBoard = () => {
+    board.classList.remove("x");
+    board.classList.remove("circle");
+    board.classList.add("x");
+    cells.forEach((cell) => {
+      cell.classList.remove("x");
+      cell.classList.remove("circle");
+    });
+  };
+
+  return { getCells, boardClass, resetBoard };
 })();
 
 const overScreenHandler = (() => {
@@ -42,8 +53,7 @@ const overScreenHandler = (() => {
   };
 })();
 
-const Game = () => {
-  overScreenHandler.hide();
+const Game = (() => {
   // circleTurn is false so X is the first to move
   let circleTurn = false;
   const playerOne = document.getElementById("player1").value;
@@ -64,6 +74,7 @@ const Game = () => {
     }
 
     if (checkWin(currentTurn)) {
+      Gameboard.resetBoard();
       switch (currentTurn) {
         case "x":
           overScreenHandler.displayWinnerName(playerOne);
@@ -73,11 +84,14 @@ const Game = () => {
           break;
       }
       overScreenHandler.show();
+      return (circleTurn = false);
     } else if (checkDraw()) {
+      Gameboard.resetBoard();
       overScreenHandler.displayWinnerName("draw");
       overScreenHandler.show();
+      return (circleTurn = false);
     }
-
+    console.log(circleTurn);
     return (circleTurn = !circleTurn);
   }
 
@@ -104,7 +118,11 @@ const Game = () => {
       return cell.classList.contains("x") || cell.classList.contains("circle");
     });
   }
-};
+})();
 
 const startButton = document.getElementById("start-button");
-startButton.addEventListener("click", Game);
+startButton.addEventListener("click", hideOverScreen);
+
+function hideOverScreen() {
+  overScreenHandler.hide();
+}
