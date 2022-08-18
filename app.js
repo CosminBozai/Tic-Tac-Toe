@@ -1,5 +1,5 @@
 const Gameboard = (() => {
-  const cells = document.querySelectorAll(".cell");
+  const cells = Array.from(document.querySelectorAll(".cell"));
   const getCells = () => {
     return cells;
   };
@@ -28,6 +28,8 @@ const overScreenHandler = (() => {
 })();
 
 const Game = (() => {
+  overScreenHandler.hide();
+
   let circleTurn = false;
   // const playerOne = document.getElementById("palyer1").value;
   // const playerTwo = document.getElementById("palyer2").value;
@@ -39,7 +41,12 @@ const Game = (() => {
       } else if (circleTurn == true) {
         cell.classList.add("circle");
       }
-      checkWin();
+      if (checkWin()) {
+        overScreenHandler.show();
+      }
+      if (checkDraw()) {
+        overScreenHandler.show();
+      }
       return (circleTurn = !circleTurn);
     });
   });
@@ -62,9 +69,16 @@ const Game = (() => {
     });
   }
 
+  function checkDraw() {
+    return Gameboard.getCells().every((cell) => {
+      return cell.classList.contains("x") || cell.classList.contains("circle");
+    });
+  }
+
   /*
   add event listener to all the cells
   check for win
+  check for draw
   if checkwin display overscreen
    */
 })();
