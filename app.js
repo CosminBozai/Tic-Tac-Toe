@@ -35,13 +35,14 @@ const Game = (() => {
   // const playerTwo = document.getElementById("palyer2").value;
   Gameboard.getCells().forEach((cell) => {
     cell.addEventListener("click", (e) => {
+      let currentTurn = circleTurn ? "circle" : "x";
       cell = e.target;
       if (circleTurn == false) {
         cell.classList.add("x");
       } else if (circleTurn == true) {
         cell.classList.add("circle");
       }
-      if (checkWin()) {
+      if (checkWin(currentTurn)) {
         overScreenHandler.show();
       }
       if (checkDraw()) {
@@ -51,7 +52,7 @@ const Game = (() => {
     });
   });
 
-  function checkWin() {
+  function checkWin(currentTurn) {
     winningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -64,7 +65,7 @@ const Game = (() => {
     ];
     return winningCombinations.some((combination) => {
       return combination.every((index) => {
-        return Gameboard.getCells()[index].classList.contains("x");
+        return Gameboard.getCells()[index].classList.contains(currentTurn);
       });
     });
   }
