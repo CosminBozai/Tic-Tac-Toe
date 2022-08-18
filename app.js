@@ -18,21 +18,23 @@ const overScreenHandler = (() => {
   const show = () => {
     overScreen.classList.add("show");
   };
+  const winningMessageText = document.getElementById("winning-message-text");
+  const displayWinnerName = (player) => {
+    winningMessageText.textContent = `${player} is the winner!`;
+  };
   return {
     hide,
     show,
+    displayWinnerName,
   };
-  /*
-
-   */
 })();
 
-const Game = (() => {
+const Game = () => {
   overScreenHandler.hide();
 
   let circleTurn = false;
-  // const playerOne = document.getElementById("palyer1").value;
-  // const playerTwo = document.getElementById("palyer2").value;
+  const playerOne = document.getElementById("player1").value;
+  const playerTwo = document.getElementById("player2").value;
   Gameboard.getCells().forEach((cell) => {
     cell.addEventListener("click", (e) => {
       let currentTurn = circleTurn ? "circle" : "x";
@@ -43,6 +45,14 @@ const Game = (() => {
         cell.classList.add("circle");
       }
       if (checkWin(currentTurn)) {
+        switch (currentTurn) {
+          case "x":
+            overScreenHandler.displayWinnerName(playerOne);
+            break;
+          case "circle":
+            overScreenHandler.displayWinnerName(playerTwo);
+            break;
+        }
         overScreenHandler.show();
       }
       if (checkDraw()) {
@@ -82,4 +92,7 @@ const Game = (() => {
   check for draw
   if checkwin display overscreen
    */
-})();
+};
+
+const startButton = document.getElementById("start-button");
+startButton.addEventListener("click", Game);
