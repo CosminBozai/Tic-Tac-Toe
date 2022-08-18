@@ -1,13 +1,22 @@
 const Gameboard = (() => {
+  //Transforming it into an array to use array.every at checkDraw()
   const cells = Array.from(document.querySelectorAll(".cell"));
   const getCells = () => {
     return cells;
   };
-  return { getCells };
-  /*
-  get cells
-
-   */
+  const board = document.getElementById("board");
+  //Adding class from the start displays the hover effect before any moves
+  board.classList.add("x");
+  const boardClass = () => {
+    if (board.classList.contains("x")) {
+      board.classList.remove("x");
+      board.classList.add("circle");
+    } else if (board.classList.contains("circle")) {
+      board.classList.remove("circle");
+      board.classList.add("x");
+    }
+  };
+  return { getCells, boardClass };
 })();
 
 const overScreenHandler = (() => {
@@ -35,40 +44,42 @@ const overScreenHandler = (() => {
 
 const Game = () => {
   overScreenHandler.hide();
-
+  // circleTurn is false so X is the first to move
   let circleTurn = false;
   const playerOne = document.getElementById("player1").value;
   const playerTwo = document.getElementById("player2").value;
   Gameboard.getCells().forEach((cell) => {
-    cell.addEventListener("click", (e) => {
-      let currentTurn = circleTurn ? "circle" : "x";
-      cell = e.target;
-
-      if (circleTurn == false) {
-        cell.classList.add("x");
-      } else if (circleTurn == true) {
-        cell.classList.add("circle");
-      }
-
-      // console.log(Gameboard.getCells());
-      if (checkWin(currentTurn)) {
-        switch (currentTurn) {
-          case "x":
-            overScreenHandler.displayWinnerName(playerOne);
-            break;
-          case "circle":
-            overScreenHandler.displayWinnerName(playerTwo);
-            break;
-        }
-        overScreenHandler.show();
-      }
-      if (checkDraw()) {
-        overScreenHandler.displayWinnerName("draw");
-        overScreenHandler.show();
-      }
-      return (circleTurn = !circleTurn);
-    });
+    cell.addEventListener("click", clickEventHandler);
   });
+
+  function clickEventHandler(e) {
+    Gameboard.boardClass();
+    let currentTurn = circleTurn ? "circle" : "x";
+    cell = e.target;
+
+    if (circleTurn == false) {
+      cell.classList.add("x");
+    } else if (circleTurn == true) {
+      cell.classList.add("circle");
+    }
+
+    if (checkWin(currentTurn)) {
+      switch (currentTurn) {
+        case "x":
+          overScreenHandler.displayWinnerName(playerOne);
+          break;
+        case "circle":
+          overScreenHandler.displayWinnerName(playerTwo);
+          break;
+      }
+      overScreenHandler.show();
+    } else if (checkDraw()) {
+      overScreenHandler.displayWinnerName("draw");
+      overScreenHandler.show();
+    }
+
+    return (circleTurn = !circleTurn);
+  }
 
   function checkWin(currentTurn) {
     winningCombinations = [
@@ -93,13 +104,6 @@ const Game = () => {
       return cell.classList.contains("x") || cell.classList.contains("circle");
     });
   }
-
-  /*
-  add event listener to all the cells
-  check for win
-  check for draw
-  if checkwin display overscreen
-   */
 };
 
 const startButton = document.getElementById("start-button");
